@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.job4j.domain.Person;
 import ru.job4j.repository.PersonRepository;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -51,5 +50,10 @@ public class PersonServiceImpl implements PersonService {
             save(person);
         }
         return personInDB;
+    }
+
+    @Override
+    public Optional<Person> findByLogin(String login) {
+        return repository.findByLogin(login);
     }
 }
