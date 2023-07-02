@@ -51,9 +51,4 @@ public class PersonServiceImpl implements PersonService {
         }
         return personInDB;
     }
-
-    @Override
-    public Optional<Person> findByLogin(String login) {
-        return repository.findByLogin(login);
-    }
 }

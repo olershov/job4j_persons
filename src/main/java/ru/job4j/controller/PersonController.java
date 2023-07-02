@@ -43,6 +43,7 @@ public class PersonController {
 
     @PutMapping("/")
     public ResponseEntity<Void> update(@RequestBody Person person) {
+        person.setPassword(encoder.encode(person.getPassword()));
         return new ResponseEntity<>(
                 persons.update(person).isPresent() ? HttpStatus.OK : HttpStatus.NOT_FOUND
         );

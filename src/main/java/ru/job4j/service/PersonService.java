@@ -16,6 +16,4 @@ public interface PersonService {
     Optional<Person> delete(Person person);
 
     Optional<Person> update(Person person);
-
-    Optional<Person> findByLogin(String login);
 }

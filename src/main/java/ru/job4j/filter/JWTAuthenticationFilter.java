@@ -31,6 +31,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     public JWTAuthenticationFilter(AuthenticationManager auth) {
         this.auth = auth;
+        setFilterProcessesUrl("/person/login");
     }
 
     @Override
