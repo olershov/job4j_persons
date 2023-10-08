@@ -18,6 +18,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Контроллер описывает CRUD операции с пользователем
+ * и построен согласно схеме Rest архитектуры
+ */
 @AllArgsConstructor
 @RestController
 @RequestMapping("/person")
@@ -28,11 +32,17 @@ public class PersonController {
     private final PersonServiceImpl persons;
     private BCryptPasswordEncoder encoder;
 
+    /**
+     * Получить список всех пользователей
+     */
     @GetMapping("/")
     public List<Person> findAll() {
         return persons.findAll();
     }
 
+    /**
+     * Поиск пользователя по id
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Person> findById(@PathVariable int id) {
         var person = persons.findById(id);
@@ -42,6 +52,10 @@ public class PersonController {
         return new ResponseEntity<>(person.get(), HttpStatus.OK);
     }
 
+    /**
+     * Регистрация нового пользователя. Перед созданием происходит проверка, заполнены ли
+     * поля логин и пароль, а так же на соответствие сложности пароля требуемым параметрам
+     */
     @PostMapping("/sign-up")
     public ResponseEntity<Person> signUp(@RequestBody Person person) {
         String password = person.getPassword();
@@ -55,6 +69,10 @@ public class PersonController {
         );
     }
 
+    /**
+     * Метод обновления пользователя. Перед созданием происходит проверка, заполнены ли
+     * поля логин и пароль, а так же на соответствие сложности пароля требуемым параметрам
+     */
     @PutMapping("/")
     public ResponseEntity<Void> update(@RequestBody Person person) {
         String password = person.getPassword();
@@ -66,6 +84,9 @@ public class PersonController {
         );
     }
 
+    /**
+     * Метод удаления пользователя
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         Person person = new Person();
@@ -76,6 +97,10 @@ public class PersonController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * Метод с аннотацией ExceptionHandler позволяет отслеживать и обрабатывать исключения на уровне
+     * данного контроллера. Данный метод создан для отслеживания IllegalArgumentException
+     */
     @ExceptionHandler(value = { IllegalArgumentException.class })
     public void exceptionHandler(Exception e, HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -87,6 +112,9 @@ public class PersonController {
         LOGGER.error(e.getLocalizedMessage());
     }
 
+    /**
+     * Метод для проверки заполненности полей login и password
+     */
     private void checkLoginAndPassword(Person person) {
         String login = person.getLogin();
         String password = person.getPassword();
@@ -95,6 +123,10 @@ public class PersonController {
         }
     }
 
+    /**
+     * Метод для проверки сложности пароля. Пароль обязательно должен быть не менее 8 символов,
+     * а также должен содержать цифры, заглавные и строчные буквы латинского алфавита.
+     */
     private void checkPassword(String password) {
         if (password.length() < 8 || !password.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[A-Za-z0-9]+$")) {
             throw new IllegalArgumentException(

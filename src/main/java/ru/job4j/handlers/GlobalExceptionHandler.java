@@ -12,6 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * Класс с аннотацией ControllerAdvice совместно с аннотацией ExceptionHandler у метода
+ * служит для отслеживания и обработки исключений у всех классов-контроллеров
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -23,6 +27,9 @@ public class GlobalExceptionHandler {
         this.objectMapper = objectMapper;
     }
 
+    /**
+     * Метод позволяет отслеживать и обрабатывать исключения NullPointerException во всех контроллерах
+     */
     @ExceptionHandler(value = {NullPointerException.class})
     public void handleException(Exception e, HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setStatus(HttpStatus.BAD_REQUEST.value());

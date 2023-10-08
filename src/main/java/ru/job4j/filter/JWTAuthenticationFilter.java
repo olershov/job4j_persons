@@ -19,6 +19,9 @@ import java.util.Date;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
+/**
+ * Класс-фильтр для аунтификации пользователя
+ */
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     public static final String SECRET = "SecretKeyToGenJWTs";
@@ -34,6 +37,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         setFilterProcessesUrl("/person/login");
     }
 
+    /**
+     * Данный метод проверяет, что пользователь с введённым логином и паролем существует
+     */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res)
             throws AuthenticationException {
@@ -52,6 +58,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         }
     }
 
+    /**
+     * Данный метод генерирует токен для пользователя
+     */
     @Override
     protected void successfulAuthentication(HttpServletRequest req,
                                             HttpServletResponse res,

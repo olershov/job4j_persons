@@ -12,6 +12,9 @@ import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 
+/**
+ * Этот класс-сервис загружает в SecurityHolder детали авторизованного пользователя.
+ */
 @AllArgsConstructor
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {

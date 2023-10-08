@@ -7,6 +7,9 @@ import ru.job4j.repository.PersonRepository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Реализация интерфейса PersonService
+ */
 @AllArgsConstructor
 @Service
 public class PersonServiceImpl implements PersonService {

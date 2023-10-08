@@ -17,6 +17,10 @@ import static ru.job4j.filter.JWTAuthenticationFilter.HEADER_STRING;
 import static ru.job4j.filter.JWTAuthenticationFilter.SECRET;
 import static ru.job4j.filter.JWTAuthenticationFilter.TOKEN_PREFIX;
 
+/**
+ * Данный класс-фильтр служит для проверки, что в заголовке запроса есть token.
+ * Если его нет, в ответ будет отправлен статус 403.
+ */
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     public JWTAuthorizationFilter(AuthenticationManager authManager) {
