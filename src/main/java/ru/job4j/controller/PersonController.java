@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.domain.Person;
+import ru.job4j.domain.PersonDTO;
 import ru.job4j.service.PersonServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,8 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Контроллер описывает CRUD операции с пользователем
- * и построен согласно схеме Rest архитектуры
+ * Контроллер описывает CRUD-операции с пользователем
+ * и построен согласно схеме Rest-архитектуры
  */
 @AllArgsConstructor
 @RestController
@@ -79,6 +80,22 @@ public class PersonController {
         checkLoginAndPassword(person);
         checkPassword(password);
         person.setPassword(encoder.encode(person.getPassword()));
+        return new ResponseEntity<>(
+                persons.update(person).isPresent() ? HttpStatus.OK : HttpStatus.NOT_FOUND
+        );
+    }
+
+    /**
+     * Метод частичного обновления пользователя. Обновляет только пароль пользователя
+     * с использованием модели PersonDTO
+     */
+    @PutMapping("/patchUpdate")
+    public ResponseEntity<Void> patchUpdate(@RequestBody PersonDTO personDto) {
+        String password = personDto.getPassword();
+        checkPassword(password);
+        Person person = new Person();
+        person.setId(personDto.getId());
+        person.setPassword(encoder.encode(personDto.getPassword()));
         return new ResponseEntity<>(
                 persons.update(person).isPresent() ? HttpStatus.OK : HttpStatus.NOT_FOUND
         );
