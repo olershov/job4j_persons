@@ -7,14 +7,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.domain.Person;
 import ru.job4j.domain.PersonDTO;
+import ru.job4j.marker.Operation;
 import ru.job4j.service.PersonServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -58,9 +61,9 @@ public class PersonController {
      * поля логин и пароль, а так же на соответствие сложности пароля требуемым параметрам
      */
     @PostMapping("/sign-up")
-    public ResponseEntity<Person> signUp(@RequestBody Person person) {
+    @Validated(Operation.OnCreate.class)
+    public ResponseEntity<Person> signUp(@Valid @RequestBody Person person) {
         String password = person.getPassword();
-        checkLoginAndPassword(person);
         checkPassword(password);
         person.setPassword(encoder.encode(password));
         var result = persons.save(person);
@@ -75,9 +78,9 @@ public class PersonController {
      * поля логин и пароль, а так же на соответствие сложности пароля требуемым параметрам
      */
     @PutMapping("/")
-    public ResponseEntity<Void> update(@RequestBody Person person) {
+    @Validated(Operation.OnUpdate.class)
+    public ResponseEntity<Void> update(@Valid @RequestBody Person person) {
         String password = person.getPassword();
-        checkLoginAndPassword(person);
         checkPassword(password);
         person.setPassword(encoder.encode(person.getPassword()));
         return new ResponseEntity<>(
@@ -90,7 +93,7 @@ public class PersonController {
      * с использованием модели PersonDTO
      */
     @PutMapping("/patchUpdate")
-    public ResponseEntity<Void> patchUpdate(@RequestBody PersonDTO personDto) {
+    public ResponseEntity<Void> patchUpdate(@Valid @RequestBody PersonDTO personDto) {
         String password = personDto.getPassword();
         checkPassword(password);
         Person person = new Person();
@@ -127,17 +130,6 @@ public class PersonController {
             put("type", e.getClass());
         }}));
         LOGGER.error(e.getLocalizedMessage());
-    }
-
-    /**
-     * Метод для проверки заполненности полей login и password
-     */
-    private void checkLoginAndPassword(Person person) {
-        String login = person.getLogin();
-        String password = person.getPassword();
-        if (login == null || password == null) {
-            throw new NullPointerException("Login and password mustn't be empty");
-        }
     }
 
     /**
