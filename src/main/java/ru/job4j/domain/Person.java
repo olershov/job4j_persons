@@ -32,13 +32,17 @@ public class Person {
      * Логин пользователя. Аннотация NotBlank говорит о том, что поле будет проходить валидацию,
      * не является ли строка пустой
      */
-    @NotBlank(message = "Login must be not empty")
+    @NotBlank(message = "Login must be not empty", groups = {
+            Operation.OnUpdate.class, Operation.OnCreate.class
+    })
     private String login;
 
     /**
      * Пароль пользователя. Аннотация NotBlank говорит о том, что поле будет проходить валидацию,
      * не является ли строка пустой
      */
-    @NotBlank(message = "Password must be not empty")
+    @NotBlank(message = "Password must be not empty", groups = {
+            Operation.OnUpdate.class, Operation.OnCreate.class
+    })
     private String password;
 }

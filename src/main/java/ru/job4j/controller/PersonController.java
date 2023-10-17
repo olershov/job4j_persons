@@ -61,8 +61,7 @@ public class PersonController {
      * поля логин и пароль, а так же на соответствие сложности пароля требуемым параметрам
      */
     @PostMapping("/sign-up")
-    @Validated(Operation.OnCreate.class)
-    public ResponseEntity<Person> signUp(@Valid @RequestBody Person person) {
+    public ResponseEntity<Person> signUp(@Validated(Operation.OnCreate.class) @RequestBody Person person) {
         String password = person.getPassword();
         checkPassword(password);
         person.setPassword(encoder.encode(password));
@@ -78,8 +77,7 @@ public class PersonController {
      * поля логин и пароль, а так же на соответствие сложности пароля требуемым параметрам
      */
     @PutMapping("/")
-    @Validated(Operation.OnUpdate.class)
-    public ResponseEntity<Void> update(@Valid @RequestBody Person person) {
+    public ResponseEntity<Void> update(@Validated(Operation.OnUpdate.class) @RequestBody Person person) {
         String password = person.getPassword();
         checkPassword(password);
         person.setPassword(encoder.encode(person.getPassword()));
